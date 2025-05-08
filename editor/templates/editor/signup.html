@@ -4,16 +4,16 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
+        <meta name="description" content="Codex - Collaborative code editing platform" />
         <meta name="author" content="" />
         <title>Codex - Sign Up</title>
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
-        <!-- Font Awesome icons (free version)-->
+        <!-- Font Awesome icons -->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
+        <!-- Core theme CSS -->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <style>
             .form-signup {
@@ -25,10 +25,10 @@
                 z-index: 2;
             }
             
-            .signup-page-section {
+            .signup-section {
                 min-height: 100vh;
                 padding-top: 10rem;
-                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("{% static 'assets/img/bg-masthead.jpg' %}");
+                background: linear-gradient(to bottom, rgba(22, 22, 22, 0.3) 0%, rgba(22, 22, 22, 0.7) 75%, #000 100%), url("{% static 'assets/img/bg-masthead.jpg' %}");
                 background-position: center;
                 background-repeat: no-repeat;
                 background-attachment: fixed;
@@ -39,6 +39,139 @@
                 background-color: rgba(255, 255, 255, 0.9);
                 border-radius: 1rem;
                 border-bottom: 0.25rem solid #64a19d;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease;
+            }
+            
+            .signup-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .btn-primary {
+                background-color: #64a19d;
+                border-color: #64a19d;
+                padding: 0.75rem 1.5rem;
+                font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.15rem;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-primary:hover {
+                background-color: #558985;
+                border-color: #558985;
+            }
+            
+            .text-primary {
+                color: #64a19d !important;
+            }
+            
+            .form-floating input:focus {
+                border-color: #64a19d;
+                box-shadow: 0 0 0 0.25rem rgba(100, 161, 157, 0.25);
+            }
+            
+            .logo-text {
+                font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                letter-spacing: 0.2rem;
+                color: #64a19d;
+            }
+            
+            .divider {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                margin: 1.5rem 0;
+            }
+            
+            .divider::before, .divider::after {
+                content: "";
+                flex: 1;
+                border-bottom: 1px solid #ced4da;
+            }
+            
+            .divider span {
+                padding: 0 1rem;
+                color: #6c757d;
+                font-size: 0.875rem;
+            }
+            
+            .social-signup {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .social-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                transition: all 0.3s ease;
+            }
+            
+            .social-btn:hover {
+                transform: translateY(-3px);
+            }
+            
+            .github {
+                background: #333;
+            }
+            
+            .google {
+                background: #DB4437;
+            }
+            
+            .linkedin {
+                background: #0077B5;
+            }
+            
+            .progress-container {
+                width: 100%;
+                margin-bottom: 1.5rem;
+            }
+            
+            .progress-bar {
+                height: 4px;
+                background-color: #e9ecef;
+                margin-bottom: 0.5rem;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            
+            .progress-fill {
+                height: 100%;
+                width: 0%;
+                background-color: #64a19d;
+                transition: width 0.3s ease;
+            }
+            
+            .password-strength {
+                font-size: 0.75rem;
+                color: #6c757d;
+            }
+            
+            .features-list {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 1.5rem;
+            }
+            
+            .feature-item {
+                flex: 1 0 50%;
+                margin-bottom: 0.5rem;
+                font-size: 0.875rem;
+                color: #495057;
+            }
+            
+            .feature-item i {
+                color: #64a19d;
+                margin-right: 0.5rem;
             }
         </style>
     </head>
@@ -46,7 +179,9 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="{% url 'home_page' %}">Codex</a>
+                <a class="navbar-brand" href="{% url 'home_page' %}">
+                    <i class="fas fa-code me-2"></i>Codex
+                </a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -61,20 +196,55 @@
         </nav>
         
         <!-- Signup Section -->
-        <section class="signup-page-section">
+        <section class="signup-section">
             <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="form-signup w-100 m-auto">
                     <div class="signup-card p-4">
                         <div class="text-center mb-4">
-                            <h2 class="text-uppercase">Create Account</h2>
+                            <h2 class="text-uppercase logo-text">
+                                <i class="fas fa-code me-2"></i>Codex
+                            </h2>
+                            <p class="text-muted">Create your account and start collaborating</p>
                             <hr class="mx-auto" style="opacity: 1; border-color: #64a19d; border-width: 0.25rem; width: 3rem;">
                         </div>
+                        
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>Real-time collaboration
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>Syntax highlighting
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>Version control
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>Cloud storage
+                            </div>
+                        </div>
+                        
+                        <div class="social-signup">
+                            <a href="#" class="social-btn github">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-btn google">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-btn linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                        
                         <form action="{% url 'signup' %}" method="post">
                             {% csrf_token %}
                             
                             {% if error_message %}
                             <div class="alert alert-danger" role="alert">
-                                {{ error_message }}
+                                <i class="fas fa-exclamation-circle me-2"></i>{{ error_message }}
                             </div>
                             {% endif %}
                             
@@ -82,38 +252,54 @@
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" required>
-                                        <label for="first_name">First Name</label>
+                                        <label for="first_name"><i class="fas fa-user me-2"></i>First Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" required>
-                                        <label for="last_name">Last Name</label>
+                                        <label for="last_name"><i class="fas fa-user me-2"></i>Last Name</label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
-                                <label for="username">Username</label>
+                                <label for="username"><i class="fas fa-at me-2"></i>Username</label>
                             </div>
                             
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required>
-                                <label for="email">Email address</label>
+                                <label for="email"><i class="fas fa-envelope me-2"></i>Email address</label>
                             </div>
                             
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required onkeyup="checkPasswordStrength()">
+                                <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="password-strength-meter"></div>
+                                </div>
+                                <div class="password-strength" id="password-strength-text">Password strength: Enter a password</div>
                             </div>
                             
                             <div class="form-floating mb-4">
                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
-                                <label for="confirm_password">Confirm Password</label>
+                                <label for="confirm_password"><i class="fas fa-lock me-2"></i>Confirm Password</label>
                             </div>
                             
-                            <button class="btn btn-primary w-100 text-uppercase" type="submit">Sign Up</button>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" value="" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <button class="btn btn-primary w-100 text-uppercase mb-3" type="submit">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
                             
                             <div class="text-center mt-4">
                                 <p>Already have an account? <a href="{% url 'login' %}" class="text-primary">Login</a></p>
@@ -125,7 +311,46 @@
         </section>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         <script src="{% static 'js/scripts.js' %}"></script>
+        
+        <script>
+            function checkPasswordStrength() {
+                const password = document.getElementById('password').value;
+                const meter = document.getElementById('password-strength-meter');
+                const text = document.getElementById('password-strength-text');
+                
+                // Simple password strength algorithm
+                let strength = 0;
+                if (password.length > 0) strength += 20;
+                if (password.length >= 8) strength += 20;
+                if (/[A-Z]/.test(password)) strength += 20;
+                if (/[0-9]/.test(password)) strength += 20;
+                if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+                
+                // Update the meter
+                meter.style.width = strength + '%';
+                
+                // Update the text
+                let strengthText = '';
+                if (strength <= 20) {
+                    strengthText = 'Very weak';
+                    meter.style.backgroundColor = '#dc3545';
+                } else if (strength <= 40) {
+                    strengthText = 'Weak';
+                    meter.style.backgroundColor = '#ffc107';
+                } else if (strength <= 60) {
+                    strengthText = 'Medium';
+                    meter.style.backgroundColor = '#fd7e14';
+                } else if (strength <= 80) {
+                    strengthText = 'Strong';
+                    meter.style.backgroundColor = '#20c997';
+                } else {
+                    strengthText = 'Very strong';
+                    meter.style.backgroundColor = '#198754';
+                }
+                
+                text.textContent = 'Password strength: ' + strengthText;
+            }
+        </script>
     </body>
 </html>

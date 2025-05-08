@@ -39,12 +39,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'editor',
+    
+    # # Allauth apps
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # # Social providers you want to use
+    # 'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.linkedin_oauth2',
+ 
 
 ]
 
 
 ASGI_APPLICATION = "realtime_editor.asgi.application"
+
+
+
+
+
 
 
 MIDDLEWARE = [
