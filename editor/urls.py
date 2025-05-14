@@ -12,7 +12,7 @@ urlpatterns = [
 
 
     path("codex-home/", codex_home_page, name="codex_home_page"),
-
+    path("create-project/", create_project, name="create_project"),
 
 
 ]

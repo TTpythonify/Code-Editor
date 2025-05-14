@@ -146,3 +146,189 @@ def get_user_profile(user_id):
     except Exception as e:
         print(f"Error retrieving user profile: {str(e)}")
         return None
+    
+
+def create_code_project(project_data):
+    """
+    Create a new code project in Firestore
+    
+    Args:
+        project_data (dict): Dictionary containing project information
+            - title: Project title
+            - description: Project description
+            - language: Programming language
+            - owner_id: Firebase user ID of the project owner
+            - members: List of member email addresses (optional)
+            - created_at: Creation timestamp
+            
+    Returns:
+        str: The ID of the newly created project document
+    """
+    try:
+        # Get a reference to the Firestore database
+        db = firestore.client()
+        
+        # Add project to the 'code_projects' collection
+        project_ref = db.collection('code_projects').document()
+        
+        # Initialize members count
+        member_count = 0
+        if 'members' in project_data and project_data['members']:
+            member_count = len(project_data['members'])
+        
+        # Add member_count to the project data
+        project_data['member_count'] = member_count
+        
+        # Set the document with project data
+        project_ref.set(project_data)
+        
+        # Return the document ID
+        return project_ref.id
+        
+    except Exception as e:
+        print(f"Error creating code project: {str(e)}")
+        raise e
+
+def get_user_projects(user_id):
+    """
+    Get all code projects owned by a specific user
+    
+    Args:
+        user_id (str): Firebase user ID
+        
+    Returns:
+        list: List of project dictionaries with formatted timestamps
+    """
+    try:
+        # Get a reference to the Firestore database
+        db = firestore.client()
+        
+        # Query the code_projects collection for projects owned by this user
+        projects_ref = db.collection('code_projects').where('owner_id', '==', user_id)
+        projects = projects_ref.stream()
+        
+        # Convert to a list of dictionaries
+        project_list = []
+        for project in projects:
+            project_data = project.to_dict()
+            # Add the project ID to the data
+            project_data['id'] = project.id
+            
+            # Format timestamps for display
+            if 'created_at' in project_data and hasattr(project_data['created_at'], 'seconds'):
+                timestamp = project_data['created_at'].seconds + project_data['created_at'].nanos/1e9
+                project_data['created_at_formatted'] = format_timestamp_relative(timestamp)
+            
+            project_list.append(project_data)
+        
+        return project_list
+    
+    except Exception as e:
+        print(f"Error getting user projects: {str(e)}")
+        return []
+
+def get_projects_shared_with_user(user_email):
+    """
+    Get all code projects shared with a specific user via their email
+    
+    Args:
+        user_email (str): User's email address
+        
+    Returns:
+        list: List of project dictionaries with formatted timestamps
+    """
+    try:
+        # Get a reference to the Firestore database
+        db = firestore.client()
+        
+        # Query the code_projects collection for projects where the user is a member
+        projects_ref = db.collection('code_projects').where('members', 'array_contains', user_email)
+        projects = projects_ref.stream()
+        
+        # Convert to a list of dictionaries
+        project_list = []
+        for project in projects:
+            project_data = project.to_dict()
+            # Add the project ID to the data
+            project_data['id'] = project.id
+            
+            # Format timestamps for display
+            if 'created_at' in project_data and hasattr(project_data['created_at'], 'seconds'):
+                timestamp = project_data['created_at'].seconds + project_data['created_at'].nanos/1e9
+                project_data['created_at_formatted'] = format_timestamp_relative(timestamp)
+            
+            project_list.append(project_data)
+        
+        return project_list
+    
+    except Exception as e:
+        print(f"Error getting shared projects: {str(e)}")
+        return []
+
+def format_timestamp_relative(timestamp):
+    """
+    Format a timestamp into a human-readable relative time string
+    e.g., "2 days ago", "5 minutes ago", etc.
+    
+    Args:
+        timestamp (float): Unix timestamp (seconds since epoch)
+        
+    Returns:
+        str: Formatted relative time string
+    """
+    import datetime
+    
+    # Convert timestamp to datetime
+    dt = datetime.datetime.fromtimestamp(timestamp)
+    now = datetime.datetime.now()
+    diff = now - dt
+    
+    if diff.days > 30:
+        months = diff.days // 30
+        return f"{months} month{'s' if months > 1 else ''} ago"
+    elif diff.days > 0:
+        return f"{diff.days} day{'s' if diff.days > 1 else ''} ago"
+    elif diff.seconds // 3600 > 0:
+        hours = diff.seconds // 3600
+        return f"{hours} hour{'s' if hours > 1 else ''} ago"
+    elif diff.seconds // 60 > 0:
+        minutes = diff.seconds // 60
+        return f"{minutes} minute{'s' if minutes > 1 else ''} ago"
+    else:
+        return "just now"
+
+def get_project_by_id(project_id):
+    """
+    Get a specific code project by its ID
+    
+    Args:
+        project_id (str): The ID of the project to retrieve
+        
+    Returns:
+        dict: Project data or None if not found
+    """
+    try:
+        # Get a reference to the Firestore database
+        db = firestore.client()
+        
+        # Get the document
+        project_ref = db.collection('code_projects').document(project_id)
+        project = project_ref.get()
+        
+        if project.exists:
+            project_data = project.to_dict()
+            # Add the project ID to the data
+            project_data['id'] = project.id
+            
+            # Format timestamps for display
+            if 'created_at' in project_data and hasattr(project_data['created_at'], 'seconds'):
+                timestamp = project_data['created_at'].seconds + project_data['created_at'].nanos/1e9
+                project_data['created_at_formatted'] = format_timestamp_relative(timestamp)
+                
+            return project_data
+        else:
+            return None
+            
+    except Exception as e:
+        print(f"Error getting project: {str(e)}")
+        return None
