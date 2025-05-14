@@ -88,16 +88,6 @@ def authenticate_firebase_user(email, password):
         except Exception as e:
             raise e
 
-# Helper function for retrieving a user profile
-def get_user_profile(uid):
-    """
-    Retrieve a user profile from Firestore
-    """
-    doc_ref = db.collection('users_profile').document(uid)
-    doc = doc_ref.get()
-    if doc.exists:
-        return doc.to_dict()
-    return None
 
 
 
