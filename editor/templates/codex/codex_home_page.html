@@ -1,3 +1,8 @@
+
+
+
+
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +21,18 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <style>
+            /* Fix entire layout to avoid scrolling */
+            body {
+                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.3) 100%), url("{% static 'assets/img/bg-masthead.jpg' %}");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+                min-height: 100vh;
+                max-height: 100vh; /* Prevent vertical scrolling */
+                overflow-y: hidden; /* Hide vertical scrolling */
+            }
+            
             .dropdown-menu {
                 background-color: rgba(255, 255, 255, 0.9);
                 border: none;
@@ -71,35 +88,51 @@
                 font-size: 0.8rem;
             }
             
-            /* Projects section styling */
+            /* Modified masthead to be shorter */
+            .masthead {
+                position: relative;
+                width: 100%;
+                height: 25vh; /* Reduced height to avoid scrolling */
+                min-height: 12rem; /* Reduced min-height */
+                padding: 6rem 0 0 0; /* Adjusted top padding */
+                background: transparent; /* Making this transparent since we have body background */
+                margin-top: 3rem; /* Added margin to push down from nav */
+            }
+            
+            /* Projects section styling with transparent background */
             .projects-section {
-                padding: 5rem 0;
-                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.3) 100%);
+                padding: 0; /* No padding */
+                margin-top: 0; /* Reset margin */
+                background: transparent; /* Transparent background */
+                position: relative;
+                z-index: 1;
             }
             
             .projects-container {
-                background-color: rgba(255, 255, 255, 0.9);
-                border-radius: 1rem;
-                padding: 2rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                background-color: rgba(0, 0, 0, 0.3); /* Fully transparent */
+                border-radius: 0; /* No border radius */
+                padding: 0; /* No padding */
+                box-shadow: none; /* No shadow */
+                max-width: 800px; /* Limit width */
+                margin: 0 auto; /* Center it */
             }
             
             .section-heading {
                 font-family: 'Varela Round', sans-serif;
                 color: #64a19d;
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem; /* Reduced margin */
                 text-align: center;
                 font-weight: 700;
             }
             
             .project-card {
-                background-color: white;
-                border-radius: 0.75rem;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+                background-color: rgba(255, 255, 255, 0.9);
+                border-radius: 0.5rem;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
                 padding: 1.5rem;
                 margin-bottom: 1.5rem;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
-                border-left: 5px solid #64a19d;
+                border-left: 4px solid rgb(118, 165, 175); /* Sea green color to match heading */
             }
             
             .project-card:hover {
@@ -137,8 +170,8 @@
                 font-size: 0.75rem;
                 font-weight: 600;
                 border-radius: 1rem;
-                background-color: rgba(100, 161, 157, 0.1);
-                color: #64a19d;
+                background-color: rgba(118, 165, 175, 0.1);
+                color: rgb(118, 165, 175);
             }
             
             .member-count {
@@ -162,7 +195,7 @@
             
             .no-projects {
                 text-align: center;
-                padding: 3rem;
+                padding: 2rem; /* Reduced padding */
                 color: #6c757d;
             }
             
@@ -255,9 +288,28 @@
                 font-size: 0.85rem;
             }
             
-            /* Create button in navbar */
-            .create-project-nav {
-                margin-right: 1rem;
+            /* Fix navbar to be more visible against dark background */
+            #mainNav {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark background */
+            }
+            
+            #mainNav .navbar-brand {
+                color: rgba(255, 255, 255, 0.9);
+            }
+            
+            #mainNav .navbar-nav .nav-item .nav-link {
+                color: rgba(255, 255, 255, 0.8);
+            }
+            
+            /* Hello user text styling */
+            .hello-user {
+                font-size: 2.0rem;
+                font-weight: 700;
+                padding-top: 10px;
+                color: white;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
             }
             
             /* Responsive adjustments */
@@ -276,7 +328,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#page-top">
+                <a class="navbar-brand" href="{% url 'codex_home_page' %}">
                     <i class="fas fa-code me-2"></i>Codex
                 </a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -322,12 +374,14 @@
             <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="d-flex justify-content-center">
                     <div class="text-center">
-                        <h1 class="mx-auto my-0 text-uppercase">Codex</h1>
-                        <div id="scrolling-text" class="text-white-50 mx-auto mt-2 mb-5">
-                            A place for collaborative code editing in real-time
-                        </div>
-                        
-                        {% if not name %}
+                        {% if name %}
+                            <!-- Changed from Codex to Hi [username] -->
+                            <h1 class="hello-user mx-auto my-0">Hi {{ name }}</h1>
+                        {% else %}
+                            <h1 class="mx-auto my-0 text-uppercase">Codex</h1>
+                            <div id="scrolling-text" class="text-white-50 mx-auto mt-2 mb-5">
+                                A place for collaborative code editing in real-time
+                            </div>
                             <a class="btn btn-primary" href="{% url 'login' %}">
                                 <i class="fas fa-sign-in-alt me-2"></i>Login to Get Started
                             </a>
@@ -337,7 +391,7 @@
             </div>
         </header>
         
-        <!-- Projects Section -->
+        <!-- Projects Section - Now positioned closer to the top -->
         {% if name %}
         <section class="projects-section">
             <div class="container px-4 px-lg-5">
