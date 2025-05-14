@@ -3,6 +3,7 @@ from firebase_admin import credentials, firestore, auth
 import os
 import requests
 import json
+import datetime
 
 # Initialize Firebase Admin SDK with your credentials file
 cred = credentials.Certificate("C:\\Users\\chidu\\Downloads\\codex-c5ff0-firebase-adminsdk-fbsvc-10d716f3a4.json")
@@ -97,3 +98,51 @@ def get_user_profile(uid):
     if doc.exists:
         return doc.to_dict()
     return None
+
+
+
+
+def get_user_profile(user_id):
+    """
+    Retrieve a user's profile from the 'users_profile' collection in Firestore
+    based on their user_id
+    
+    Args:
+        user_id (str): The Firebase Auth user ID
+        
+    Returns:
+        dict: User profile information including username, email, names, 
+              and login timestamps, or None if not found
+    """
+    try:
+        # Get a reference to the Firestore database
+        db = firestore.client()
+        
+        # Reference the specific document in the users_profile collection
+        user_ref = db.collection('users_profile').document(user_id)
+        
+        # Get the document
+        user_doc = user_ref.get()
+        
+        # Check if the document exists
+        if user_doc.exists:
+            # Convert to dictionary
+            profile_data = user_doc.to_dict()
+            
+            # Format timestamps for display if needed
+            if 'created_at' in profile_data and hasattr(profile_data['created_at'], 'seconds'):
+                timestamp = profile_data['created_at'].seconds + profile_data['created_at'].nanos/1e9
+                profile_data['created_at_formatted'] = datetime.datetime.fromtimestamp(timestamp).strftime('%B %d, %Y at %I:%M:%S %p %Z')
+                
+            if 'last_login' in profile_data and hasattr(profile_data['last_login'], 'seconds'):
+                timestamp = profile_data['last_login'].seconds + profile_data['last_login'].nanos/1e9
+                profile_data['last_login_formatted'] = datetime.datetime.fromtimestamp(timestamp).strftime('%B %d, %Y at %I:%M:%S %p %Z')
+            
+            return profile_data
+        else:
+            print(f"No user profile found for user_id: {user_id}")
+            return None
+            
+    except Exception as e:
+        print(f"Error retrieving user profile: {str(e)}")
+        return None

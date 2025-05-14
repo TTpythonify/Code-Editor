@@ -136,9 +136,6 @@
                                     <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
                                 </ul>
                             </li>
-                        {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Sign Up</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -158,8 +155,6 @@
                             <a class="btn btn-primary" href="#" id="create-project-button">
                                 <i class="fas fa-plus-circle me-2"></i>Create New Project
                             </a>
-                        {% else %}
-                            <a class="btn btn-primary" href="{% url 'login' %}">Get Started</a>
                         {% endif %}
                     </div>
                 </div>
