@@ -123,14 +123,6 @@
                 background: #333;
             }
             
-            .google {
-                background: #DB4437;
-            }
-            
-            .linkedin {
-                background: #0077B5;
-            }
-            
             .progress-container {
                 width: 100%;
                 margin-bottom: 1.5rem;
@@ -173,13 +165,31 @@
                 color: #64a19d;
                 margin-right: 0.5rem;
             }
+            
+            .password-feedback {
+                margin-top: 5px;
+                font-size: 0.8rem;
+                visibility: hidden;
+            }
+            
+            .password-feedback.visible {
+                visibility: visible;
+            }
+            
+            .passwords-match {
+                color: #198754;
+            }
+            
+            .passwords-dont-match {
+                color: #dc3545;
+            }
         </style>
     </head>
     <body id="page-top">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="{% url 'home_page' %}">
+                <a class="navbar-brand" href="{% url 'landing_page' %}">
                     <i class="fas fa-code me-2"></i>Codex
                 </a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -188,7 +198,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'home_page' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'landing_page' %}">Back</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                     </ul>
                 </div>
@@ -233,7 +243,7 @@
                             <span>OR</span>
                         </div>
                         
-                        <form action="{% url 'signup' %}" method="post">
+                        <form action="{% url 'signup' %}" method="post" id="signupForm">
                             {% csrf_token %}
                             
                             {% if error_message %}
@@ -267,7 +277,7 @@
                                 <label for="email"><i class="fas fa-envelope me-2"></i>Email address</label>
                             </div>
                             
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-2">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required onkeyup="checkPasswordStrength()">
                                 <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
                             </div>
@@ -279,13 +289,16 @@
                                 <div class="password-strength" id="password-strength-text">Password strength: Enter a password</div>
                             </div>
                             
-                            <div class="form-floating mb-4">
-                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                            <div class="form-floating mb-2">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required onkeyup="checkPasswordMatch()">
                                 <label for="confirm_password"><i class="fas fa-lock me-2"></i>Confirm Password</label>
                             </div>
-            
                             
-                            <button class="btn btn-primary w-100 text-uppercase mb-3" type="submit">
+                            <div class="password-feedback" id="password-match-feedback">
+                                <i class="fas fa-check-circle"></i> Passwords match
+                            </div>
+                            
+                            <button class="btn btn-primary w-100 text-uppercase mb-3 mt-3" type="submit" id="submit-button">
                                 <i class="fas fa-user-plus me-2"></i>Create Account
                             </button>
                             
@@ -338,7 +351,60 @@
                 }
                 
                 text.textContent = 'Password strength: ' + strengthText;
+                
+                // Also check password match when strength is updated
+                checkPasswordMatch();
             }
+            
+            function checkPasswordMatch() {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
+                const feedback = document.getElementById('password-match-feedback');
+                const submitButton = document.getElementById('submit-button');
+                
+                if (confirmPassword.length > 0) {
+                    feedback.classList.add('visible');
+                    
+                    if (password === confirmPassword) {
+                        feedback.innerHTML = '<i class="fas fa-check-circle"></i> Passwords match';
+                        feedback.classList.add('passwords-match');
+                        feedback.classList.remove('passwords-dont-match');
+                        submitButton.disabled = false;
+                    } else {
+                        feedback.innerHTML = '<i class="fas fa-times-circle"></i> Passwords do not match';
+                        feedback.classList.add('passwords-dont-match');
+                        feedback.classList.remove('passwords-match');
+                        submitButton.disabled = true;
+                    }
+                } else {
+                    feedback.classList.remove('visible');
+                    submitButton.disabled = false;
+                }
+            }
+            
+            // Form validation before submission
+            document.getElementById('signupForm').addEventListener('submit', function(event) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm_password').value;
+                
+                if (password !== confirmPassword) {
+                    event.preventDefault();
+                    alert('Passwords do not match. Please check and try again.');
+                }
+                
+                // Check password strength
+                let strength = 0;
+                if (password.length > 0) strength += 20;
+                if (password.length >= 8) strength += 20;
+                if (/[A-Z]/.test(password)) strength += 20;
+                if (/[0-9]/.test(password)) strength += 20;
+                if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+                
+                if (strength < 60) {
+                    event.preventDefault();
+                    alert('Please use a stronger password. Include at least 8 characters, uppercase letters, numbers, and special characters.');
+                }
+            });
         </script>
     </body>
 </html>
