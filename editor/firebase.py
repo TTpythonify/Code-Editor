@@ -322,3 +322,313 @@ def get_project_by_id(project_id):
     except Exception as e:
         print(f"Error getting project: {str(e)}")
         return None
+    
+
+
+
+
+def search_users_by_username(query, limit=10):
+    """
+    Search for users by username in the users_profile collection
+    
+    Args:
+        query (str): Search query for username
+        limit (int): Maximum number of results to return
+        
+    Returns:
+        list: List of user dictionaries with username and email
+    """
+    try:
+        # Get a reference to the Firestore database
+        db = firestore.client()
+        
+        # Query users_profile collection for usernames that start with the query
+        # Note: Firestore doesn't support case-insensitive searches, so we'll do exact match
+        # and then filter in Python for better matching
+        users_ref = db.collection('users_profile')
+        
+        # Get all users and filter in Python (not efficient for large datasets)
+        # For production, consider using Algolia or similar for better search
+        all_users = users_ref.stream()
+        
+        matching_users = []
+        query_lower = query.lower()
+        
+        for user_doc in all_users:
+            user_data = user_doc.to_dict()
+            username = user_data.get('username', '').lower()
+            
+            # Check if username contains the query
+            if query_lower in username and len(matching_users) < limit:
+                matching_users.append({
+                    'user_id': user_doc.id,
+                    'username': user_data.get('username', ''),
+                    'email': user_data.get('email', ''),
+                    'display_name': user_data.get('display_name', ''),
+                    'first_name': user_data.get('first_name', ''),
+                    'last_name': user_data.get('last_name', '')
+                })
+        
+        return matching_users
+        
+    except Exception as e:
+        print(f"Error searching users: {str(e)}")
+        return []
+
+def create_project_invitation(sender_id, recipient_username, project_id, project_title, project_description=""):
+    """
+    Create a project invitation notification
+    
+    Args:
+        sender_id (str): Firebase user ID of the person sending the invite
+        recipient_username (str): Username of the person being invited
+        project_id (str): ID of the project being shared
+        project_title (str): Title of the project
+        project_description (str): Description of the project
+        
+    Returns:
+        str: The ID of the created notification
+    """
+    try:
+        # Get sender's profile
+        sender_profile = get_user_profile(sender_id)
+        sender_name = sender_profile.get('display_name') or f"{sender_profile.get('first_name', '')} {sender_profile.get('last_name', '')}".strip()
+        
+        # Find recipient by username
+        recipient_users = search_users_by_username(recipient_username, limit=1)
+        if not recipient_users:
+            raise Exception(f"User with username '{recipient_username}' not found")
+        
+        recipient = recipient_users[0]
+        recipient_id = recipient['user_id']
+        
+        # Create notification data
+        notification_data = {
+            'type': 'project_invitation',
+            'sender_id': sender_id,
+            'sender_name': sender_name,
+            'sender_email': sender_profile.get('email', ''),
+            'recipient_id': recipient_id,
+            'recipient_username': recipient_username,
+            'recipient_email': recipient['email'],
+            'project_id': project_id,
+            'project_title': project_title,
+            'project_description': project_description,
+            'message': f"{sender_name} invited you to join '{project_title}'",
+            'status': 'pending',  # pending, accepted, declined
+            'created_at': datetime.datetime.now(),
+            'read': False
+        }
+        
+        # Add notification to Firestore
+        db = firestore.client()
+        notification_ref = db.collection('notifications').document()
+        notification_ref.set(notification_data)
+        
+        return notification_ref.id
+        
+    except Exception as e:
+        print(f"Error creating project invitation: {str(e)}")
+        raise e
+
+def get_user_notifications(user_id, limit=20):
+    """
+    Get all notifications for a user
+    
+    Args:
+        user_id (str): Firebase user ID
+        limit (int): Maximum number of notifications to return
+        
+    Returns:
+        list: List of notification dictionaries
+    """
+    try:
+        db = firestore.client()
+        
+        # Query notifications where the user is the recipient
+        notifications_ref = db.collection('notifications').where('recipient_id', '==', user_id).order_by('created_at', direction=firestore.Query.DESCENDING).limit(limit)
+        notifications = notifications_ref.stream()
+        
+        notification_list = []
+        for notification in notifications:
+            notification_data = notification.to_dict()
+            notification_data['id'] = notification.id
+            
+            # Format timestamp
+            if 'created_at' in notification_data and hasattr(notification_data['created_at'], 'seconds'):
+                timestamp = notification_data['created_at'].seconds + notification_data['created_at'].nanos/1e9
+                notification_data['created_at_formatted'] = format_timestamp_relative(timestamp)
+            
+            notification_list.append(notification_data)
+        
+        return notification_list
+        
+    except Exception as e:
+        print(f"Error getting user notifications: {str(e)}")
+        return []
+
+def update_notification_status(notification_id, status, user_id=None):
+    """
+    Update the status of a notification (accept/decline invitation)
+    
+    Args:
+        notification_id (str): ID of the notification
+        status (str): New status ('accepted', 'declined', 'read')
+        user_id (str): Optional user ID for validation
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        db = firestore.client()
+        notification_ref = db.collection('notifications').document(notification_id)
+        
+        # Get the notification first to validate
+        notification = notification_ref.get()
+        if not notification.exists:
+            return False
+        
+        notification_data = notification.to_dict()
+        
+        # Validate user has permission to update this notification
+        if user_id and notification_data.get('recipient_id') != user_id:
+            return False
+        
+        # Update the notification
+        update_data = {
+            'status': status,
+            'updated_at': datetime.datetime.now()
+        }
+        
+        if status in ['accepted', 'declined']:
+            update_data['read'] = True
+        elif status == 'read':
+            update_data['read'] = True
+        
+        notification_ref.update(update_data)
+        
+        # Handle project invitation responses
+        if notification_data.get('type') == 'project_invitation':
+            project_id = notification_data.get('project_id')
+            recipient_email = notification_data.get('recipient_email')
+            
+            if status == 'accepted':
+                # Add user to project
+                add_user_to_project(project_id, recipient_email)
+            elif status == 'declined':
+                # Remove from pending invitations
+                remove_pending_invitation(project_id, recipient_email)
+        
+        return True
+        
+    except Exception as e:
+        print(f"Error updating notification status: {str(e)}")
+        return False
+
+def add_user_to_project(project_id, user_email):
+    """
+    Add a user to a project's members list and remove from pending invitations
+    
+    Args:
+        project_id (str): ID of the project
+        user_email (str): Email of the user to add
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        db = firestore.client()
+        project_ref = db.collection('code_projects').document(project_id)
+        
+        # Get current project data
+        project = project_ref.get()
+        if not project.exists:
+            return False
+        
+        project_data = project.to_dict()
+        current_members = project_data.get('members', [])
+        pending_invitations = project_data.get('pending_invitations', [])
+        
+        # Add user if not already a member
+        if user_email not in current_members:
+            current_members.append(user_email)
+            
+            # Remove from pending invitations
+            if user_email in pending_invitations:
+                pending_invitations.remove(user_email)
+            
+            # Update project with new member
+            project_ref.update({
+                'members': current_members,
+                'pending_invitations': pending_invitations,
+                'member_count': len(current_members),
+                'updated_at': datetime.datetime.now()
+            })
+        
+        return True
+        
+    except Exception as e:
+        print(f"Error adding user to project: {str(e)}")
+        return False
+
+def remove_pending_invitation(project_id, user_email):
+    """
+    Remove a user from pending invitations when they decline
+    
+    Args:
+        project_id (str): ID of the project
+        user_email (str): Email of the user who declined
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        db = firestore.client()
+        project_ref = db.collection('code_projects').document(project_id)
+        
+        # Get current project data
+        project = project_ref.get()
+        if not project.exists:
+            return False
+        
+        project_data = project.to_dict()
+        pending_invitations = project_data.get('pending_invitations', [])
+        
+        # Remove from pending invitations
+        if user_email in pending_invitations:
+            pending_invitations.remove(user_email)
+            
+            # Update project
+            project_ref.update({
+                'pending_invitations': pending_invitations,
+                'updated_at': datetime.datetime.now()
+            })
+        
+        return True
+        
+    except Exception as e:
+        print(f"Error removing pending invitation: {str(e)}")
+        return False
+
+def get_unread_notifications_count(user_id):
+    """
+    Get the count of unread notifications for a user
+    
+    Args:
+        user_id (str): Firebase user ID
+        
+    Returns:
+        int: Number of unread notifications
+    """
+    try:
+        db = firestore.client()
+        
+        # Query unread notifications
+        notifications_ref = db.collection('notifications').where('recipient_id', '==', user_id).where('read', '==', False)
+        notifications = notifications_ref.stream()
+        
+        return len(list(notifications))
+        
+    except Exception as e:
+        print(f"Error getting unread notifications count: {str(e)}")
+        return 0

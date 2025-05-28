@@ -16,29 +16,76 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <style>
-        /* Fix entire layout to avoid scrolling */
+/* Single page layout - no scrolling */
 body {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.3) 100%), url("{% static 'assets/img/bg-masthead.jpg' %}");
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    min-height: 100vh;
-    max-height: 100vh; /* Prevent vertical scrolling */
-    overflow-y: hidden; /* Hide vertical scrolling */
+    height: 100vh;
+    overflow: hidden; /* Prevent all scrolling */
+    margin: 0;
+    padding: 0;
 }
 
+/* Navigation styling */
+#mainNav {
+    padding: 0.75rem 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    height: 70px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+#mainNav .navbar-brand {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+#mainNav .navbar-nav .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.create-project-nav {
+    display: flex;
+    align-items: center;
+}
+
+.create-project-nav .nav-link {
+    background-color: rgba(100, 161, 157, 0.9) !important;
+    color: white !important;
+    border-radius: 25px;
+    padding: 0.6rem 1.2rem !important;
+    margin-right: 1.5rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 2px solid rgba(100, 161, 157, 0.9) !important;
+}
+
+.create-project-nav .nav-link:hover {
+    background-color: rgba(100, 161, 157, 1) !important;
+    transform: translateY(-2px);
+}
+
+/* Dropdown styling */
 .dropdown-menu {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     border: none;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-item {
     color: #212529;
-    padding: 0.5rem 1.5rem;
-    font-size: 0.85rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
     transition: all 0.2s ease;
 }
 
@@ -55,14 +102,9 @@ body {
 .user-greeting {
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.6rem 1.5rem;
     color: #6c757d;
     border-bottom: 1px solid #e9ecef;
-}
-
-.dropdown-divider {
-    margin: 0.5rem 0;
-    border-color: #e9ecef;
 }
 
 .user-profile {
@@ -71,80 +113,161 @@ body {
 }
 
 .user-avatar {
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    background-color: #64a19d;
+    background: linear-gradient(135deg, #64a19d, #518b88);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 0.5rem;
-    font-size: 0.8rem;
+    margin-right: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
-/* Modified masthead to be shorter */
-.masthead {
-    position: relative;
-    width: 100%;
-    height: 25vh; /* Reduced height to avoid scrolling */
-    min-height: 12rem; /* Reduced min-height */
-    padding: 6rem 0 0 0; /* Adjusted top padding */
-    background: transparent; /* Making this transparent since we have body background */
-    margin-top: 3rem; /* Added margin to push down from nav */
+/* Main content container */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-top: 70px; /* Account for fixed navbar */
 }
 
-/* Projects section styling with transparent background */
+/* Welcome section - compact */
+.welcome-section {
+    flex: 0 0 auto;
+    padding: 2rem 0 1.5rem 0;
+    text-align: center;
+}
+
+.hello-user {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+/* Projects section - takes remaining space */
 .projects-section {
-    padding: 0; /* No padding */
-    margin-top: 0; /* Reset margin */
-    background: transparent; /* Transparent background */
-    position: relative;
-    z-index: 1;
-}
-
-.projects-container {
-    background-color: rgba(0, 0, 0, 0.3); /* Fully transparent */
-    border-radius: 0; /* No border radius */
-    padding: 0; /* No padding */
-    box-shadow: none; /* No shadow */
-    max-width: 800px; /* Limit width */
-    margin: 0 auto; /* Center it */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem 2rem 2rem;
+    min-height: 0; /* Important for flex child */
 }
 
 .section-heading {
     font-family: 'Varela Round', sans-serif;
     color: #64a19d;
-    margin-bottom: 1.5rem; /* Reduced margin */
+    margin-bottom: 1.5rem;
     text-align: center;
     font-weight: 700;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+/* Horizontal scrolling projects container */
+.projects-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.projects-scroll-wrapper {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 1rem;
+    margin: 0 -1rem; /* Compensate for padding */
+    padding: 0 1rem;
+}
+
+.projects-scroll-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.projects-scroll-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.projects-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(100, 161, 157, 0.6);
+    border-radius: 4px;
+}
+
+.projects-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 161, 157, 0.8);
+}
+
+.projects-grid {
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 0.5rem;
+    min-height: 100%;
+    align-items: flex-start;
+}
+
+/* Project cards */
 .project-card {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 0.5rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    flex: 0 0 320px; /* Fixed width for horizontal scroll */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid rgb(118, 165, 175); 
+    transition: all 0.3s ease;
+    border-left: 4px solid #64a19d;
+    height: fit-content;
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 1);
 }
 
 .project-title {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #212529;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
 }
 
 .project-description {
     color: #6c757d;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.language-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(100, 161, 157, 0.15), rgba(100, 161, 157, 0.1));
+    color: #64a19d;
     margin-bottom: 1rem;
 }
 
@@ -152,170 +275,385 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #f0f0f0;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #adb5bd;
-}
-
-.language-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 1rem;
-    background-color: rgba(118, 165, 175, 0.1);
-    color: rgb(118, 165, 175);
-}
-
-.member-count {
-    display: flex;
-    align-items: center;
-}
-
-.member-count i {
-    margin-right: 0.25rem;
 }
 
 .project-actions a {
     color: #64a19d;
     margin-left: 1rem;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
 }
 
 .project-actions a:hover {
     color: #518b88;
+    transform: scale(1.1);
 }
 
+/* No projects state */
 .no-projects {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 2rem; /* Reduced padding */
-    color: #6c757d;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .no-projects i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #dee2e6;
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.no-projects p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.no-projects .btn {
+    background: linear-gradient(135deg, #64a19d, #518b88);
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.no-projects .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(100, 161, 157, 0.4);
 }
 
 /* Modal styling */
 .modal-content {
-    border-radius: 1rem;
+    border-radius: 1.5rem;
     border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .modal-header {
-    border-bottom: 1px solid #f0f0f0;
-    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    padding: 2rem 2rem 1.5rem 2rem;
+    border-radius: 1.5rem 1.5rem 0 0;
 }
 
 .modal-title {
     font-weight: 700;
     color: #64a19d;
+    font-size: 1.4rem;
 }
 
 .modal-body {
-    padding: 1.5rem;
+    padding: 1.5rem 2rem;
 }
 
 .modal-footer {
-    border-top: 1px solid #f0f0f0;
-    padding: 1.5rem;
+    border-top: 1px solid #e9ecef;
+    padding: 1.5rem 2rem 2rem 2rem;
+    border-radius: 0 0 1.5rem 1.5rem;
 }
 
 .form-control {
-    border-radius: 0.5rem;
-    padding: 0.75rem;
+    border-radius: 0.8rem;
+    padding: 0.9rem 1rem;
     border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
 }
 
 .form-control:focus {
     border-color: #64a19d;
-    box-shadow: 0 0 0 0.2rem rgba(100, 161, 157, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(100, 161, 157, 0.15);
 }
 
 .form-label {
     font-weight: 600;
     color: #495057;
+    margin-bottom: 0.7rem;
 }
 
-/* Tags input styling */
-.tags-input-wrapper {
+/* Member invitation styling */
+.member-invite-section {
+    background: #f8f9fa;
+    border-radius: 0.8rem;
+    padding: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.username-search-wrapper {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     background: white;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    border: 1px solid #e9ecef;
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-result-item {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f8f9fa;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-result-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-result-username {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.2rem;
+}
+
+.search-result-email {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.search-result-invite-btn {
+    background: linear-gradient(135deg, #64a19d, #518b88);
+    border: none;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.search-result-invite-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 161, 157, 0.3);
+}
+
+.search-result-invite-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.selected-members-wrapper {
+    background: white;
+    border-radius: 0.8rem;
+    padding: 1rem;
     border: 1px solid #e9ecef;
 }
 
-.tags-input {
+.selected-members {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.8rem;
+    min-height: 2rem;
+    align-items: center;
 }
 
-.tag {
+.no-members-text {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.selected-member-item {
     display: flex;
     align-items: center;
-    background-color: rgba(100, 161, 157, 0.1);
+    background: linear-gradient(135deg, rgba(100, 161, 157, 0.15), rgba(100, 161, 157, 0.1));
     color: #64a19d;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 20px;
     font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(100, 161, 157, 0.2);
 }
 
-.tag button {
+.selected-member-info {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.5rem;
+}
+
+.selected-member-username {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.selected-member-email {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+
+.remove-member-btn {
     background: none;
     border: none;
     color: #64a19d;
     cursor: pointer;
-    margin-left: 0.25rem;
-    padding: 0 0.25rem;
+    margin-left: 0.4rem;
+    padding: 0 0.3rem;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
 }
 
-.tags-input input {
-    border: none;
-    outline: none;
-    flex: 1;
-    padding: 0.25rem;
-    font-size: 0.85rem;
+.remove-member-btn:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
 }
 
-/* Fix navbar to be more visible against dark background */
-#mainNav {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark background */
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #64a19d;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-#mainNav .navbar-brand {
-    color: rgba(255, 255, 255, 0.9);
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-#mainNav .navbar-nav .nav-item .nav-link {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Hello user text styling */
-.hello-user {
-    font-size: 2.0rem;
-    font-weight: 700;
-    padding-top: 10px;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-/* Responsive adjustments */
+/* Responsive design */
 @media (max-width: 768px) {
-    .projects-container {
-        padding: 1rem;
+    .hello-user {
+        font-size: 2rem;
+    }
+    
+    .projects-section {
+        padding: 0 1rem 1rem 1rem;
     }
     
     .project-card {
+        flex: 0 0 280px;
+        padding: 1.2rem;
+    }
+    
+    .welcome-section {
+        padding: 1.5rem 0 1rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .hello-user {
+        font-size: 1.8rem;
+    }
+    
+    .project-card {
+        flex: 0 0 250px;
         padding: 1rem;
     }
+    
+    .projects-section {
+        padding: 0 0.5rem 1rem 0.5rem;
+    }
+}
+
+
+.notification-dropdown {
+    min-width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-item.unread {
+    background: #e3f2fd;
+    border-left: 4px solid #64a19d;
+}
+
+.notification-content {
+    margin-bottom: 0.5rem;
+}
+
+.notification-title {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.3rem;
+}
+
+.notification-message {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.notification-description {
+    color: #adb5bd;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.notification-time {
+    font-size: 0.75rem;
+    color: #adb5bd;
+    margin-top: 0.5rem;
+}
+
+.btn-accept {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+.btn-decline {
+    background: linear-gradient(135deg, #dc3545, #e74c3c);
+    border: none;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
 }
         </style>
     </head>
@@ -358,45 +696,57 @@ body {
                                     <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
                                 </ul>
                             </li>
+
+                            <li class="nav-item dropdown" id="notificationDropdown">
+                        <a class="nav-link dropdown-toggle position-relative" href="#" id="notificationBell" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationBadge" style="display: none;">
+                                0
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationBell">
+                            <li class="dropdown-header">
+                                <strong>Notifications</strong>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <div id="notificationsList">
+                                <li class="dropdown-item text-center text-muted">
+                                    <em>No notifications</em>
+                                </li>
+                            </div>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropdown-item text-center">
+                                <a href="#" class="text-primary" onclick="markAllAsRead()">Mark all as read</a>
+                            </li>
+                        </ul>
+                    </li>
+
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
         
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-                <div class="d-flex justify-content-center">
-                    <div class="text-center">
-                        {% if name %}
-                            <!-- Changed from Codex to Hi [username] -->
-                            <h1 class="hello-user mx-auto my-0">Hi {{ name }}</h1>
-                        {% else %}
-                            <h1 class="mx-auto my-0 text-uppercase">Codex</h1>
-                            <div id="scrolling-text" class="text-white-50 mx-auto mt-2 mb-5">
-                                A place for collaborative code editing in real-time
-                            </div>
-                            <a class="btn btn-primary" href="{% url 'login' %}">
-                                <i class="fas fa-sign-in-alt me-2"></i>Login to Get Started
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
+        <!-- Main Content Container -->
+        <div class="main-content">
+            <!-- Welcome Section -->
+            {% if name %}
+            <div class="welcome-section">
+                <h1 class="hello-user">Hi {{ name }}</h1>
+                <p class="welcome-subtitle">Ready to build something amazing today?</p>
             </div>
-        </header>
-        
-        <!-- Projects Section - Now positioned closer to the top -->
-        {% if name %}
-        <section class="projects-section">
-            <div class="container px-4 px-lg-5">
+            {% endif %}
+            
+            <!-- Projects Section -->
+            {% if name %}
+            <div class="projects-section">
+                <h2 class="section-heading">Your Projects</h2>
+                
                 <div class="projects-container">
-                    <h2 class="section-heading">Your Projects</h2>
-                    
                     {% if projects %}
-                        <div class="row">
-                            {% for project in projects %}
-                                <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="projects-scroll-wrapper">
+                            <div class="projects-grid">
+                                {% for project in projects %}
                                     <div class="project-card">
                                         <div class="project-title">{{ project.title }}</div>
                                         <div class="project-description">{{ project.description }}</div>
@@ -420,12 +770,12 @@ body {
                                         
                                         <div class="project-meta">
                                             <div class="project-info">
-                                                <span class="project-timestamp">
+                                                <div>
                                                     <i class="far fa-clock me-1"></i>{{ project.created_at_formatted }}
-                                                </span>
-                                                <span class="member-count ms-3">
+                                                </div>
+                                                <div class="mt-1">
                                                     <i class="fas fa-users me-1"></i>{{ project.member_count|default:"1" }} member{{ project.member_count|default:"1"|pluralize }}
-                                                </span>
+                                                </div>
                                             </div>
                                             <div class="project-actions">
                                                 <a href="#" title="Open Editor">
@@ -437,12 +787,12 @@ body {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
                     {% else %}
                         <div class="no-projects">
-                            <i class="fas fa-folder-open d-block"></i>
+                            <i class="fas fa-folder-open"></i>
                             <p>You don't have any projects yet.</p>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProjectModal">
                                 <i class="fas fa-plus-circle me-2"></i>Create Your First Project
@@ -451,8 +801,8 @@ body {
                     {% endif %}
                 </div>
             </div>
-        </section>
-        {% endif %}
+            {% endif %}
+        </div>
         
         <!-- Create Project Modal -->
         <div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
@@ -496,14 +846,29 @@ body {
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="projectMembers" class="form-label">Collaborators (Email Addresses)</label>
-                                <div class="tags-input-wrapper">
-                                    <div class="tags-input" id="tagsInput">
-                                        <input type="text" id="tagInput" placeholder="Type email and press Enter">
+                                <label for="projectMembers" class="form-label">Invite Collaborators</label>
+                                <div class="member-invite-section">
+                                    <!-- Username Search -->
+                                    <div class="username-search-wrapper">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="usernameSearch" placeholder="Search by username...">
+                                            <button class="btn btn-outline-secondary" type="button" id="searchUserBtn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                        <div id="searchResults" class="search-results"></div>
+                                    </div>
+                                    
+                                    <!-- Selected Members -->
+                                    <div class="selected-members-wrapper mt-3">
+                                        <label class="form-label">Selected Collaborators:</label>
+                                        <div class="selected-members" id="selectedMembers">
+                                            <div class="no-members-text" id="noMembersText">No collaborators selected yet</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <input type="hidden" id="membersJson" name="members" value="[]">
-                                <small class="form-text text-muted">Enter email addresses of collaborators you want to invite</small>
+                                <small class="form-text text-muted">Search for users by their username to invite them to collaborate</small>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -519,63 +884,322 @@ body {
         <!-- Core theme JS-->
         <script src="{% static 'js/scripts.js' %}"></script>
         
-        <!-- Tags Input JavaScript -->
+        <!-- Member Invitation JavaScript -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const tagsInput = document.getElementById('tagsInput');
-                const tagInput = document.getElementById('tagInput');
+                const usernameSearch = document.getElementById('usernameSearch');
+                const searchUserBtn = document.getElementById('searchUserBtn');
+                const searchResults = document.getElementById('searchResults');
+                const selectedMembers = document.getElementById('selectedMembers');
+                const noMembersText = document.getElementById('noMembersText');
                 const membersJsonInput = document.getElementById('membersJson');
-                let members = [];
+                
+                let selectedMembersList = [];
+                let searchTimeout;
                 
                 function updateMembersJson() {
-                    membersJsonInput.value = JSON.stringify(members);
+                    membersJsonInput.value = JSON.stringify(selectedMembersList);
                 }
                 
-                function createTag(email) {
-                    const tag = document.createElement('div');
-                    tag.classList.add('tag');
+                function showNoMembersText() {
+                    if (selectedMembersList.length === 0) {
+                        noMembersText.style.display = 'block';
+                    } else {
+                        noMembersText.style.display = 'none';
+                    }
+                }
+                
+                function addSelectedMember(userData) {
+                    // Check if user is already selected
+                    if (selectedMembersList.find(member => member.username === userData.username)) {
+                        return;
+                    }
                     
-                    const tagText = document.createElement('span');
-                    tagText.textContent = email;
-                    tag.appendChild(tagText);
+                    selectedMembersList.push(userData);
                     
-                    const closeBtn = document.createElement('button');
-                    closeBtn.textContent = '×';
-                    closeBtn.addEventListener('click', function() {
-                        tag.remove();
-                        members = members.filter(m => m !== email);
-                        updateMembersJson();
+                    const memberItem = document.createElement('div');
+                    memberItem.classList.add('selected-member-item');
+                    memberItem.innerHTML = `
+                        <div class="selected-member-info">
+                            <div class="selected-member-username">${userData.username}</div>
+                            <div class="selected-member-email">${userData.email}</div>
+                        </div>
+                        <button type="button" class="remove-member-btn" onclick="removeMember('${userData.username}')">
+                            ×
+                        </button>
+                    `;
+                    
+                    selectedMembers.appendChild(memberItem);
+                    showNoMembersText();
+                    updateMembersJson();
+                    
+                    // Clear search
+                    usernameSearch.value = '';
+                    searchResults.style.display = 'none';
+                }
+                
+                window.removeMember = function(username) {
+                    selectedMembersList = selectedMembersList.filter(member => member.username !== username);
+                    
+                    // Remove from DOM
+                    const memberItems = selectedMembers.querySelectorAll('.selected-member-item');
+                    memberItems.forEach(item => {
+                        const memberUsername = item.querySelector('.selected-member-username').textContent;
+                        if (memberUsername === username) {
+                            item.remove();
+                        }
                     });
                     
-                    tag.appendChild(closeBtn);
-                    return tag;
+                    showNoMembersText();
+                    updateMembersJson();
+                };
+                
+                function searchUsers(query) {
+                    if (query.length < 2) {
+                        searchResults.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Show loading
+                    searchResults.innerHTML = '<div class="search-result-item"><div class="loading-spinner"></div> Searching...</div>';
+                    searchResults.style.display = 'block';
+                    
+                    // Make AJAX call to search for users
+                    fetch('/search-users/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        },
+                        body: JSON.stringify({ query: query })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        searchResults.innerHTML = '';
+                        
+                        if (data.users && data.users.length > 0) {
+                            data.users.forEach(user => {
+                                const isAlreadySelected = selectedMembersList.find(member => member.username === user.username);
+                                
+                                const resultItem = document.createElement('div');
+                                resultItem.classList.add('search-result-item');
+                                resultItem.innerHTML = `
+                                    <div class="search-result-info">
+                                        <div class="search-result-username">${user.username}</div>
+                                        <div class="search-result-email">${user.email}</div>
+                                    </div>
+                                    <button type="button" class="search-result-invite-btn" 
+                                            ${isAlreadySelected ? 'disabled' : ''} 
+                                            onclick="inviteUser('${user.username}', '${user.email}')">
+                                        ${isAlreadySelected ? 'Already Selected' : 'Invite'}
+                                    </button>
+                                `;
+                                searchResults.appendChild(resultItem);
+                            });
+                        } else {
+                            searchResults.innerHTML = '<div class="search-result-item">No users found</div>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error searching users:', error);
+                        searchResults.innerHTML = '<div class="search-result-item">Error searching users</div>';
+                    });
                 }
                 
-                function isValidEmail(email) {
-                    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(String(email).toLowerCase());
-                }
+                window.inviteUser = function(username, email) {
+                    addSelectedMember({ username: username, email: email });
+                };
                 
-                tagInput.addEventListener('keydown', function(e) {
+                // Search functionality
+                usernameSearch.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        searchUsers(this.value.trim());
+                    }, 300);
+                });
+                
+                searchUserBtn.addEventListener('click', function() {
+                    searchUsers(usernameSearch.value.trim());
+                });
+                
+                usernameSearch.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        
-                        const email = tagInput.value.trim();
-                        if (email && isValidEmail(email) && !members.includes(email)) {
-                            const tag = createTag(email);
-                            tagsInput.insertBefore(tag, tagInput);
-                            members.push(email);
-                            updateMembersJson();
-                            tagInput.value = '';
-                        } else if (email && !isValidEmail(email)) {
-                            alert('Please enter a valid email address');
-                        }
+                        searchUsers(this.value.trim());
                     }
                 });
                 
-                // Initialize with empty array
+                // Hide search results when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.username-search-wrapper')) {
+                        searchResults.style.display = 'none';
+                    }
+                });
+                
+                // Initialize
+                showNoMembersText();
                 updateMembersJson();
             });
+
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                loadNotifications();
+                
+                // Poll for new notifications every 30 seconds
+                setInterval(loadNotifications, 30000);
+            });
+
+            function loadNotifications() {
+                fetch('/notifications/')
+                    .then(response => response.json())
+                    .then(data => {
+                        updateNotificationUI(data.notifications, data.unread_count);
+                    })
+                    .catch(error => {
+                        console.error('Error loading notifications:', error);
+                    });
+            }
+
+            function updateNotificationUI(notifications, unreadCount) {
+                const badge = document.getElementById('notificationBadge');
+                const notificationsList = document.getElementById('notificationsList');
+                
+                // Update badge
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+                
+                // Update notifications list
+                if (notifications.length === 0) {
+                    notificationsList.innerHTML = '<li class="dropdown-item text-center text-muted"><em>No notifications</em></li>';
+                    return;
+                }
+                
+                notificationsList.innerHTML = '';
+                
+                notifications.forEach(notification => {
+                    console.log("This is the notification \n", notification)
+                    const notificationItem = createNotificationItem(notification);
+                    notificationsList.appendChild(notificationItem);
+                });
+            }
+
+            function createNotificationItem(notification) {
+                const li = document.createElement('li');
+                li.className = `notification-item ${!notification.read ? 'unread' : ''}`;
+                
+                if (notification.type === 'project_invitation') {
+                    const formattedDate = new Date(notification.created_at).toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                    });
+
+                    li.innerHTML = `
+                        <div class="notification-content">
+                            <div class="notification-title">Project Invitation</div>
+                            <div class="notification-message">${notification.message}</div>
+                            ${notification.project_description ? `<div class="notification-description">${notification.project_description}</div>` : ''}
+                            <div class="notification-time">${formattedDate}</div>
+                            ${notification.status === 'pending' ? `
+                            <div class="notification-actions">
+                                <button class="btn btn-accept" onclick="handleInvitation('${notification.id}', 'accept')">
+                                    Accept
+                                </button>
+                                <button class="btn btn-decline" onclick="handleInvitation('${notification.id}', 'decline')">
+                                    Decline
+                                </button>
+                            </div>` : `
+                            <div class="notification-actions">
+                                <small class="text-muted">Status: ${notification.status}</small>
+                            </div>`}
+                        </div>
+                    `;
+                }
+                else {
+                    li.innerHTML = `
+                        <div class="notification-content">
+                            <div class="notification-message">${notification.message}</div>
+                            <div class="notification-time">${notification.created_at_formatted}</div>
+                        </div>
+                    `;
+                }
+                
+                // Mark as read when clicked
+                if (!notification.read) {
+                    li.addEventListener('click', () => markAsRead(notification.id));
+                }
+                
+                return li;
+            }
+
+            function handleInvitation(notificationId, action) {
+                fetch('/handle-invitation/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({
+                        notification_id: notificationId,
+                        action: action
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        alert(data.message);
+                        // Reload notifications
+                        loadNotifications();
+                        // Optionally reload the page to update project list
+                        if (action === 'accept') {
+                            location.reload();
+                        }
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error handling invitation:', error);
+                    alert('Failed to handle invitation');
+                });
+            }
+
+            function markAsRead(notificationId) {
+                fetch('/mark-notification-read/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({
+                        notification_id: notificationId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadNotifications();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error marking notification as read:', error);
+                });
+            }
+
+            function markAllAsRead() {
+                // This would require a separate endpoint to mark all notifications as read
+                // For now, just reload notifications
+                loadNotifications();
+            }
         </script>
     </body>
 </html>

@@ -14,5 +14,12 @@ urlpatterns = [
     path("codex-home/", codex_home_page, name="codex_home_page"),
     path("create-project/", create_project, name="create_project"),
 
+    path('search-users/', search_users, name='search_users'),
+    
+    # Notification management
+    path('notifications/', get_notifications, name='get_notifications'),
+    path('handle-invitation/', handle_invitation, name='handle_invitation'),
+    path('mark-notification-read/', mark_notification_read, name='mark_notification_read'),
+
 
 ]
