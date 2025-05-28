@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 from .view_codex import *
+from .view_code_editor import *
 
 
 urlpatterns = [
@@ -21,5 +22,9 @@ urlpatterns = [
     path('handle-invitation/', handle_invitation, name='handle_invitation'),
     path('mark-notification-read/', mark_notification_read, name='mark_notification_read'),
 
+
+
+
+    path('editor/', editor_view, name='editor'),
 
 ]
