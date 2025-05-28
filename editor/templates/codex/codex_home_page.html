@@ -1,8 +1,3 @@
-
-
-
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -21,307 +16,307 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <style>
-            /* Fix entire layout to avoid scrolling */
-            body {
-                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.3) 100%), url("{% static 'assets/img/bg-masthead.jpg' %}");
-                background-position: center;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: cover;
-                min-height: 100vh;
-                max-height: 100vh; /* Prevent vertical scrolling */
-                overflow-y: hidden; /* Hide vertical scrolling */
-            }
-            
-            .dropdown-menu {
-                background-color: rgba(255, 255, 255, 0.9);
-                border: none;
-                border-radius: 0.5rem;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            }
-            
-            .dropdown-item {
-                color: #212529;
-                padding: 0.5rem 1.5rem;
-                font-size: 0.85rem;
-                transition: all 0.2s ease;
-            }
-            
-            .dropdown-item:hover {
-                background-color: rgba(100, 161, 157, 0.1);
-                color: #64a19d;
-            }
-            
-            .dropdown-item i {
-                margin-right: 0.5rem;
-                color: #64a19d;
-            }
-            
-            .user-greeting {
-                font-size: 0.9rem;
-                margin-bottom: 0.5rem;
-                padding: 0.5rem 1.5rem;
-                color: #6c757d;
-                border-bottom: 1px solid #e9ecef;
-            }
-            
-            .dropdown-divider {
-                margin: 0.5rem 0;
-                border-color: #e9ecef;
-            }
-            
-            .user-profile {
-                display: flex;
-                align-items: center;
-            }
-            
-            .user-avatar {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background-color: #64a19d;
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: 0.5rem;
-                font-size: 0.8rem;
-            }
-            
-            /* Modified masthead to be shorter */
-            .masthead {
-                position: relative;
-                width: 100%;
-                height: 25vh; /* Reduced height to avoid scrolling */
-                min-height: 12rem; /* Reduced min-height */
-                padding: 6rem 0 0 0; /* Adjusted top padding */
-                background: transparent; /* Making this transparent since we have body background */
-                margin-top: 3rem; /* Added margin to push down from nav */
-            }
-            
-            /* Projects section styling with transparent background */
-            .projects-section {
-                padding: 0; /* No padding */
-                margin-top: 0; /* Reset margin */
-                background: transparent; /* Transparent background */
-                position: relative;
-                z-index: 1;
-            }
-            
-            .projects-container {
-                background-color: rgba(0, 0, 0, 0.3); /* Fully transparent */
-                border-radius: 0; /* No border radius */
-                padding: 0; /* No padding */
-                box-shadow: none; /* No shadow */
-                max-width: 800px; /* Limit width */
-                margin: 0 auto; /* Center it */
-            }
-            
-            .section-heading {
-                font-family: 'Varela Round', sans-serif;
-                color: #64a19d;
-                margin-bottom: 1.5rem; /* Reduced margin */
-                text-align: center;
-                font-weight: 700;
-            }
-            
-            .project-card {
-                background-color: rgba(255, 255, 255, 0.9);
-                border-radius: 0.5rem;
-                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                border-left: 4px solid rgb(118, 165, 175); /* Sea green color to match heading */
-            }
-            
-            .project-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            }
-            
-            .project-title {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: #212529;
-                margin-bottom: 0.5rem;
-            }
-            
-            .project-description {
-                color: #6c757d;
-                font-size: 0.9rem;
-                margin-bottom: 1rem;
-            }
-            
-            .project-meta {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid #f0f0f0;
-                font-size: 0.8rem;
-                color: #adb5bd;
-            }
-            
-            .language-badge {
-                display: inline-block;
-                padding: 0.25rem 0.75rem;
-                font-size: 0.75rem;
-                font-weight: 600;
-                border-radius: 1rem;
-                background-color: rgba(118, 165, 175, 0.1);
-                color: rgb(118, 165, 175);
-            }
-            
-            .member-count {
-                display: flex;
-                align-items: center;
-            }
-            
-            .member-count i {
-                margin-right: 0.25rem;
-            }
-            
-            .project-actions a {
-                color: #64a19d;
-                margin-left: 1rem;
-                transition: color 0.2s ease;
-            }
-            
-            .project-actions a:hover {
-                color: #518b88;
-            }
-            
-            .no-projects {
-                text-align: center;
-                padding: 2rem; /* Reduced padding */
-                color: #6c757d;
-            }
-            
-            .no-projects i {
-                font-size: 3rem;
-                margin-bottom: 1rem;
-                color: #dee2e6;
-            }
-            
-            /* Modal styling */
-            .modal-content {
-                border-radius: 1rem;
-                border: none;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            }
-            
-            .modal-header {
-                border-bottom: 1px solid #f0f0f0;
-                padding: 1.5rem;
-            }
-            
-            .modal-title {
-                font-weight: 700;
-                color: #64a19d;
-            }
-            
-            .modal-body {
-                padding: 1.5rem;
-            }
-            
-            .modal-footer {
-                border-top: 1px solid #f0f0f0;
-                padding: 1.5rem;
-            }
-            
-            .form-control {
-                border-radius: 0.5rem;
-                padding: 0.75rem;
-                border: 1px solid #e9ecef;
-            }
-            
-            .form-control:focus {
-                border-color: #64a19d;
-                box-shadow: 0 0 0 0.2rem rgba(100, 161, 157, 0.25);
-            }
-            
-            .form-label {
-                font-weight: 600;
-                color: #495057;
-            }
-            
-            /* Tags input styling */
-            .tags-input-wrapper {
-                background: white;
-                padding: 0.5rem;
-                border-radius: 0.5rem;
-                border: 1px solid #e9ecef;
-            }
-            
-            .tags-input {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .tag {
-                display: flex;
-                align-items: center;
-                background-color: rgba(100, 161, 157, 0.1);
-                color: #64a19d;
-                padding: 0.25rem 0.5rem;
-                border-radius: 0.25rem;
-                font-size: 0.85rem;
-            }
-            
-            .tag button {
-                background: none;
-                border: none;
-                color: #64a19d;
-                cursor: pointer;
-                margin-left: 0.25rem;
-                padding: 0 0.25rem;
-            }
-            
-            .tags-input input {
-                border: none;
-                outline: none;
-                flex: 1;
-                padding: 0.25rem;
-                font-size: 0.85rem;
-            }
-            
-            /* Fix navbar to be more visible against dark background */
-            #mainNav {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
-                background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark background */
-            }
-            
-            #mainNav .navbar-brand {
-                color: rgba(255, 255, 255, 0.9);
-            }
-            
-            #mainNav .navbar-nav .nav-item .nav-link {
-                color: rgba(255, 255, 255, 0.8);
-            }
-            
-            /* Hello user text styling */
-            .hello-user {
-                font-size: 2.0rem;
-                font-weight: 700;
-                padding-top: 10px;
-                color: white;
-                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-            }
-            
-            /* Responsive adjustments */
-            @media (max-width: 768px) {
-                .projects-container {
-                    padding: 1rem;
-                }
-                
-                .project-card {
-                    padding: 1rem;
-                }
-            }
+        /* Fix entire layout to avoid scrolling */
+body {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.3) 100%), url("{% static 'assets/img/bg-masthead.jpg' %}");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 100vh; /* Prevent vertical scrolling */
+    overflow-y: hidden; /* Hide vertical scrolling */
+}
+
+.dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: #212529;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(100, 161, 157, 0.1);
+    color: #64a19d;
+}
+
+.dropdown-item i {
+    margin-right: 0.5rem;
+    color: #64a19d;
+}
+
+.user-greeting {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    color: #6c757d;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: #e9ecef;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #64a19d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Modified masthead to be shorter */
+.masthead {
+    position: relative;
+    width: 100%;
+    height: 25vh; /* Reduced height to avoid scrolling */
+    min-height: 12rem; /* Reduced min-height */
+    padding: 6rem 0 0 0; /* Adjusted top padding */
+    background: transparent; /* Making this transparent since we have body background */
+    margin-top: 3rem; /* Added margin to push down from nav */
+}
+
+/* Projects section styling with transparent background */
+.projects-section {
+    padding: 0; /* No padding */
+    margin-top: 0; /* Reset margin */
+    background: transparent; /* Transparent background */
+    position: relative;
+    z-index: 1;
+}
+
+.projects-container {
+    background-color: rgba(0, 0, 0, 0.3); /* Fully transparent */
+    border-radius: 0; /* No border radius */
+    padding: 0; /* No padding */
+    box-shadow: none; /* No shadow */
+    max-width: 800px; /* Limit width */
+    margin: 0 auto; /* Center it */
+}
+
+.section-heading {
+    font-family: 'Varela Round', sans-serif;
+    color: #64a19d;
+    margin-bottom: 1.5rem; /* Reduced margin */
+    text-align: center;
+    font-weight: 700;
+}
+
+.project-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid rgb(118, 165, 175); 
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.project-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+
+.project-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.8rem;
+    color: #adb5bd;
+}
+
+.language-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 1rem;
+    background-color: rgba(118, 165, 175, 0.1);
+    color: rgb(118, 165, 175);
+}
+
+.member-count {
+    display: flex;
+    align-items: center;
+}
+
+.member-count i {
+    margin-right: 0.25rem;
+}
+
+.project-actions a {
+    color: #64a19d;
+    margin-left: 1rem;
+    transition: color 0.2s ease;
+}
+
+.project-actions a:hover {
+    color: #518b88;
+}
+
+.no-projects {
+    text-align: center;
+    padding: 2rem; /* Reduced padding */
+    color: #6c757d;
+}
+
+.no-projects i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+}
+
+/* Modal styling */
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 700;
+    color: #64a19d;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #f0f0f0;
+    padding: 1.5rem;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid #e9ecef;
+}
+
+.form-control:focus {
+    border-color: #64a19d;
+    box-shadow: 0 0 0 0.2rem rgba(100, 161, 157, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Tags input styling */
+.tags-input-wrapper {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.tags-input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    background-color: rgba(100, 161, 157, 0.1);
+    color: #64a19d;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.85rem;
+}
+
+.tag button {
+    background: none;
+    border: none;
+    color: #64a19d;
+    cursor: pointer;
+    margin-left: 0.25rem;
+    padding: 0 0.25rem;
+}
+
+.tags-input input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 0.25rem;
+    font-size: 0.85rem;
+}
+
+/* Fix navbar to be more visible against dark background */
+#mainNav {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark background */
+}
+
+#mainNav .navbar-brand {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#mainNav .navbar-nav .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Hello user text styling */
+.hello-user {
+    font-size: 2.0rem;
+    font-weight: 700;
+    padding-top: 10px;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .projects-container {
+        padding: 1rem;
+    }
+    
+    .project-card {
+        padding: 1rem;
+    }
+}
         </style>
     </head>
     <body id="page-top">
