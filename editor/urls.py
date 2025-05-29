@@ -14,7 +14,6 @@ urlpatterns = [
 
     path("codex-home/", codex_home_page, name="codex_home_page"),
     path("create-project/", create_project, name="create_project"),
-
     path('search-users/', search_users, name='search_users'),
     
     # Notification management
@@ -25,6 +24,6 @@ urlpatterns = [
 
 
 
-    path('editor/', editor_view, name='editor'),
+    path('codex/editor/<str:room_id>/', editor_view, name='editor_view'),
 
 ]
