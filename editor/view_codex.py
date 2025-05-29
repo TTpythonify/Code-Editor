@@ -9,7 +9,10 @@ import json
 
 
 
+
 def codex_home_page(request):
+    print("This is the current hub aswl")  
+    
     current_user = request.session.get("user_id")
 
     # Check if user_id is missing
@@ -61,11 +64,6 @@ def codex_home_page(request):
             {'name': 'Guest'}
         )
 
-# Add these views to your view_codex.py file
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 
 @csrf_exempt
 def search_users(request):

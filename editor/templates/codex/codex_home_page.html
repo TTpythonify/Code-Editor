@@ -221,7 +221,7 @@ body {
     align-items: flex-start;
 }
 
-/* Project cards */
+/* Project cards - now clickable buttons */
 .project-card {
     flex: 0 0 320px; /* Fixed width for horizontal scroll */
     background: rgba(255, 255, 255, 0.95);
@@ -232,12 +232,30 @@ body {
     transition: all 0.3s ease;
     border-left: 4px solid #64a19d;
     height: fit-content;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    width: 320px;
 }
 
 .project-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
     background: rgba(255, 255, 255, 1);
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card:focus {
+    outline: 2px solid #64a19d;
+    outline-offset: 2px;
+}
+
+.project-card:active {
+    transform: translateY(-4px);
 }
 
 .project-title {
@@ -281,16 +299,46 @@ body {
     color: #adb5bd;
 }
 
-.project-actions a {
-    color: #64a19d;
-    margin-left: 1rem;
-    transition: all 0.2s ease;
-    font-size: 1.1rem;
+.project-actions {
+    display: flex;
+    gap: 1rem;
 }
 
-.project-actions a:hover {
+.project-actions .action-icon {
+    color: #64a19d;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    padding: 0.3rem;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-actions .action-icon:hover {
     color: #518b88;
+    background: rgba(100, 161, 157, 0.1);
     transform: scale(1.1);
+}
+
+.open-editor-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, #64a19d, #518b88);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.project-card {
+    position: relative;
 }
 
 /* No projects state */
@@ -559,6 +607,7 @@ body {
     .project-card {
         flex: 0 0 280px;
         padding: 1.2rem;
+        width: 280px;
     }
     
     .welcome-section {
@@ -574,13 +623,13 @@ body {
     .project-card {
         flex: 0 0 250px;
         padding: 1rem;
+        width: 250px;
     }
     
     .projects-section {
         padding: 0 0.5rem 1rem 0.5rem;
     }
 }
-
 
 .notification-dropdown {
     min-width: 350px;
@@ -654,6 +703,248 @@ body {
     padding: 0.3rem 0.8rem;
     border-radius: 15px;
     font-size: 0.8rem;
+}
+
+/* Hub Actions Container - Horizontal Scrolling */
+.hub-actions {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    padding-bottom: 1.5rem;
+}
+
+.hub-actions::-webkit-scrollbar {
+    height: 8px;
+}
+
+.hub-actions::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.hub-actions::-webkit-scrollbar-thumb {
+    background: rgba(100, 161, 157, 0.6);
+    border-radius: 4px;
+}
+
+.hub-actions::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 161, 157, 0.8);
+}
+
+/* Hub Item Container */
+.hub-item {
+    flex: 0 0 320px; /* Fixed width for horizontal scroll */
+    width: 320px;
+}
+
+/* Hub Button Styling */
+.hub-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid #64a19d;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    min-height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hub-btn:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 1);
+    border-left-width: 8px;
+}
+
+.hub-btn:focus {
+    outline: 2px solid #64a19d;
+    outline-offset: 3px;
+}
+
+.hub-btn:active {
+    transform: translateY(-4px);
+}
+
+/* Hub Icon */
+.hub-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #64a19d, #518b88);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.hub-icon i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.hub-btn:hover .hub-icon {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(100, 161, 157, 0.4);
+}
+
+/* Hub Title */
+.hub-btn h4 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 0;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Hub Description */
+.hub-btn p {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin: 0;
+    text-align: center;
+    line-height: 1.4;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* Hub Meta Information */
+.hub-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.hub-status {
+    background: linear-gradient(135deg, rgba(100, 161, 157, 0.15), rgba(100, 161, 157, 0.1));
+    color: #64a19d;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(100, 161, 157, 0.2);
+}
+
+.hub-status.active {
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.1));
+    color: #28a745;
+    border-color: rgba(40, 167, 69, 0.2);
+}
+
+.hub-members, .hub-time {
+    color: #adb5bd;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.hub-members i, .hub-time i {
+    color: #64a19d;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 4rem 2rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.btn-find-hub {
+    background: linear-gradient(135deg, #64a19d, #518b88);
+    border: none;
+    color: white;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-find-hub:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(100, 161, 157, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hub-actions {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .hub-btn {
+        padding: 1.5rem;
+        min-height: 180px;
+    }
+    
+    .hub-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .hub-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .hub-btn h4 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hub-actions {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .hub-btn {
+        padding: 1.2rem;
+        min-height: 160px;
+    }
 }
         </style>
     </head>
@@ -738,67 +1029,52 @@ body {
             {% endif %}
             
             <!-- Projects Section -->
+            <!-- Projects Section -->
             {% if name %}
             <div class="projects-section">
                 <h2 class="section-heading">Your Projects</h2>
                 
                 <div class="projects-container">
-                    {% if projects %}
-                        <div class="projects-scroll-wrapper">
-                            <div class="projects-grid">
-                                {% for project in projects %}
-                                    <div class="project-card">
-                                        <div class="project-title">{{ project.title }}</div>
-                                        <div class="project-description">{{ project.description }}</div>
-                                        
-                                        <div class="language-badge">
+                    <div class="hub-actions">
+                        {% if projects %}
+                            {% for project in projects %}
+                                <div class="hub-item" data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add:100 }}">
+                                    <button class="btn hub-btn" data-url="{% url 'editor_view' project.id %}">
+                                        <div class="hub-icon">
                                             {% if project.language == 'python' %}
-                                                <i class="fab fa-python me-1"></i>
+                                                <i class="fab fa-python"></i>
                                             {% elif project.language == 'javascript' %}
-                                                <i class="fab fa-js me-1"></i>
+                                                <i class="fab fa-js"></i>
                                             {% elif project.language == 'html' %}
-                                                <i class="fab fa-html5 me-1"></i>
+                                                <i class="fab fa-html5"></i>
                                             {% elif project.language == 'css' %}
-                                                <i class="fab fa-css3-alt me-1"></i>
+                                                <i class="fab fa-css3-alt"></i>
                                             {% elif project.language == 'java' %}
-                                                <i class="fab fa-java me-1"></i>
+                                                <i class="fab fa-java"></i>
                                             {% else %}
-                                                <i class="fas fa-code me-1"></i>
+                                                <i class="fas fa-code"></i>
                                             {% endif %}
-                                            {{ project.language|title }}
                                         </div>
-                                        
-                                        <div class="project-meta">
-                                            <div class="project-info">
-                                                <div>
-                                                    <i class="far fa-clock me-1"></i>{{ project.created_at_formatted }}
-                                                </div>
-                                                <div class="mt-1">
-                                                    <i class="fas fa-users me-1"></i>{{ project.member_count|default:"1" }} member{{ project.member_count|default:"1"|pluralize }}
-                                                </div>
-                                            </div>
-                                            <div class="project-actions">
-                                                <a href="#" title="Open Editor">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="#" title="Project Settings">
-                                                    <i class="fas fa-cog"></i>
-                                                </a>
-                                            </div>
+                                        <h4>{{ project.title }}</h4>
+                                        <p>{{ project.description|truncatechars:50 }}</p>
+                                        <div class="hub-meta">
+                                            <span class="hub-status active">{{ project.language|title }}</span>
+                                            <span class="hub-members"><i class="fas fa-users"></i> {{ project.member_count|default:"1" }}</span>
+                                            <span class="hub-time"><i class="far fa-clock"></i> {{ project.created_at_formatted }}</span>
                                         </div>
-                                    </div>
-                                {% endfor %}
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state" data-aos="fade-in">
+                                <i class="fas fa-folder-open"></i>
+                                <p>Projects will appear here</p>
+                                <button class="btn-find-hub" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+                                    <i class="fas fa-plus-circle me-2"></i>Create Your First Project
+                                </button>
                             </div>
-                        </div>
-                    {% else %}
-                        <div class="no-projects">
-                            <i class="fas fa-folder-open"></i>
-                            <p>You don't have any projects yet.</p>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProjectModal">
-                                <i class="fas fa-plus-circle me-2"></i>Create Your First Project
-                            </button>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% endif %}
@@ -883,6 +1159,70 @@ body {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="{% static 'js/scripts.js' %}"></script>
+        
+        <!-- Project Navigation JavaScript -->
+        <script>
+            // Hub Navigation JavaScript
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("This is the current hub aswl");
+                
+                // Handle hub button clicks
+                const hubButtons = document.querySelectorAll('.hub-btn[data-url]');
+                
+                hubButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const url = this.getAttribute('data-url');
+                        const projectTitle = this.querySelector('h4').textContent;
+                        
+                        console.log('Navigating to project:', projectTitle);
+                        console.log('Project URL:', url);
+                        console.log("This is the current hub aswl");
+                        
+                        // Add loading state
+                        this.style.opacity = '0.7';
+                        this.style.transform = 'scale(0.98)';
+                        
+                        // Navigate to the project room
+                        window.location.href = url;
+                    });
+                    
+                    // Add hover effects
+                    button.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-8px)';
+                    });
+                    
+                    button.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+                
+                // Handle keyboard navigation
+                hubButtons.forEach(button => {
+                    button.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                });
+            });
+
+            // Optional: Add animation on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                const hubItems = document.querySelectorAll('.hub-item');
+                
+                hubItems.forEach((item, index) => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        item.style.transition = 'all 0.6s ease';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            });
+        </script>
         
         <!-- Member Invitation JavaScript -->
         <script>
@@ -1040,8 +1380,6 @@ body {
                 showNoMembersText();
                 updateMembersJson();
             });
-
-
 
             document.addEventListener('DOMContentLoaded', function() {
                 loadNotifications();
